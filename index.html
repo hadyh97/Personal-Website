@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home — Personal Website</title>
+  <link rel="stylesheet" href="fancy.css" />
+
+  <!-- Vue (extra credit) -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <!-- jQuery  -->
+  <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+</head>
+<body :class="theme" id="app">
+  <header class="site-header">
+    <h1>{{ siteTitle }}</h1>
+    <nav class="nav">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="about.html">About</a>
+      <a href="resume.html">Résumé</a>
+      <button class="theme-toggle" @click="toggleTheme" type="button">
+        Toggle {{ theme === 'light' ? 'Dark' : 'Light' }} Mode
+      </button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>Welcome</h2>
+
+      <!-- 4 paragraphs with bold & italic and links -->
+      <p>
+        This website is built for my CIS115 assignment and includes a small game,
+        an <em>About</em> page, and a <strong>Résumé</strong> page. It also
+        uses <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue.js</a>
+        for extra credit and
+        <a href="https://jquery.com/" target="_blank" rel="noopener">jQuery</a>
+        for the game logic.
+      </p>
+
+      <p>
+        I’m mixing <strong>bold</strong> and <em>italic</em> text to meet the
+        formatting requirements. You’ll also find internal navigation links to
+        <a href="about.html">About</a> and <a href="resume.html">Résumé</a>.
+      </p>
+
+      <p>
+        The site uses a <strong>custom</strong> stylesheet <code>fancy.css</code> for fonts,
+        colors, link styles, and layout. Try the <em>theme toggle</em> in the
+        navbar to switch between light and dark modes.
+      </p>
+
+      <p>
+        Below is a simple <strong>tic-tac-toe</strong> game implemented with
+        jQuery. Click squares to play. The game detects a winner or a draw and
+        lets you <em>reset</em>.
+      </p>
+    </section>
+
+    <!-- Tic-Tac-Toe -->
+    <section class="card">
+      <h2>Tic-Tac-Toe</h2>
+      <div id="ttt-status" class="status">Player X’s turn</div>
+      <div id="ttt-board" class="grid">
+        <!-- 9 squares -->
+        <button class="cell" data-idx="0"></button>
+        <button class="cell" data-idx="1"></button>
+        <button class="cell" data-idx="2"></button>
+        <button class="cell" data-idx="3"></button>
+        <button class="cell" data-idx="4"></button>
+        <button class="cell" data-idx="5"></button>
+        <button class="cell" data-idx="6"></button>
+        <button class="cell" data-idx="7"></button>
+        <button class="cell" data-idx="8"></button>
+      </div>
+      <div class="actions">
+        <button id="ttt-reset" class="btn">Reset</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>&copy; <span>{{ year }}</span> — Personal Website</small>
+  </footer>
+
+  <script>
+    // ===== Vue (extra credit) =====
+    const app = Vue.createApp({
+      data() {
+        return {
+          siteTitle: "My Personal Website",
+          theme: "light",
+          year: new Date().getFullYear(),
+        };
+      },
+      methods: {
+        toggleTheme() {
+          this.theme = this.theme === "light" ? "dark" : "light";
+        }
+      }
+    });
+    app.mount("#app");
+
+    // ===== jQuery Tic-Tac-Toe =====
+    $(function () {
+      const lines = [
+        [0,1,2],[3,4,5],[6,7,8], // rows
+        [0,3,6],[1,4,7],[2,5,8], // cols
+        [0,4,8],[2,4,6]          // diagonals
+      ];
+      let board = Array(9).fill("");
+      let player = "X";
+      let active = true;
+
+      function updateStatus(msg) {
+        $("#ttt-status").text(msg);
+      }
+      function render() {
+        $(".cell").each(function() {
+          const i = Number($(this).data("idx"));
+          $(this).text(board[i]);
+        });
+      }
+      function winner(b) {
+        for (const [a, c, d] of lines) {
+          if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a];
+        }
+        return b.every(x => x) ? "draw" : null;
+      }
+
+      $(".cell").on("click", function() {
+        if (!active) return;
+        const i = Number($(this).data("idx"));
+        if (board[i]) return; // occupied
+        board[i] = player;
+        render();
+        const w = winner(board);
+        if (w === "X" || w === "O") {
+          active = false;
+          updateStatus(`Player ${w} wins!`);
+          return;
+        } else if (w === "draw") {
+          active = false;
+          updateStatus("It’s a draw!");
+          return;
+        }
+        player = (player === "X") ? "O" : "X";
+        updateStatus(`Player ${player}’s turn`);
+      });
+
+      $("#ttt-reset").on("click", function() {
+        board = Array(9).fill("");
+        player = "X";
+        active = true;
+        render();
+        updateStatus("Player X’s turn");
+      });
+
+      // initial render
+      render();
+    });
+  </script>
+</body>
+</html>

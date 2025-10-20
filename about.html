@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — Personal Website</title>
+  <link rel="stylesheet" href="fancy.css" />
+
+  <!---- Vue for extra credit --->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+</head>
+<body :class="theme" id="app">
+  <header class="site-header">
+    <h1>{{ siteTitle }}</h1>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="about.html" aria-current="page">About</a>
+      <a href="resume.html">Résumé</a>
+      <button class="theme-toggle" @click="toggleTheme" type="button">
+        Toggle {{ theme === 'light' ? 'Dark' : 'Light' }} Mode
+      </button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>About Me</h2>
+      <p>Hi! I’m a student who enjoys coding, and building small web projects.</p>
+
+      <h3>Favorites</h3>
+      <ul>
+        <li>Movie: <em>The Godfather</em></li>
+        <li>Show: <em>Breaking Bad</em></li>
+        <li>Game: <em>RDR2</em></li>
+        <li>Music Artist: <em>Kendrick Lamar</em></li>
+      </ul>
+
+      <h3>Photo</h3>
+      <img src="https://picsum.photos/640/360" alt="A placeholder scenic photo" class="responsive-img" />
+
+      <h3>Favorite Site</h3>
+      <p>
+      <p>My favorite website is <a href="https://www.youtube.com/">YouTube</a>.</p>
+      </p>
+
+      <h3>Video Embed</h3>
+      <div class="embed">
+        <iframe
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+          title="YouTube video"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>&copy; <span>{{ year }}</span> — Personal Website</small>
+  </footer>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return { siteTitle: "About", theme: "light", year: new Date().getFullYear() };
+      },
+      methods: {
+        toggleTheme() { this.theme = this.theme === "light" ? "dark" : "light"; }
+      }
+    });
+    app.mount("#app");
+  </script>
+</body>
+</html>

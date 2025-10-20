@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Résumé — Personal Website</title>
+  <link rel="stylesheet" href="fancy.css" />
+
+  <!-- Vue for extra credit -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+</head>
+<body :class="theme" id="app">
+  <header class="site-header">
+    <h1>{{ siteTitle }}</h1>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="resume.html" aria-current="page">Résumé</a>
+      <button class="theme-toggle" @click="toggleTheme" type="button">
+        Toggle {{ theme === 'light' ? 'Dark' : 'Light' }} Mode
+      </button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- 4 sections, each in its own <div> with a header -->
+    <div class="card">
+      <h2>Contact</h2>
+      <p>Email: hadyhosam7777@gmail.com</p>
+      <p>Website: https://people.cs.ksu.edu/~hadyh/</p>
+    </div>
+
+    <div class="card">
+      <h2>Education</h2>
+      <p><strong>University:</strong> Kansas State University</p>
+      <p><strong>Major:</strong> Computer Science/ Applied Mathematics</p>
+      <p><strong>Expected Graduation:</strong> 2028</p>
+    </div>
+
+    <div class="card">
+      <h2>Experience</h2>
+      <ul>
+        <li>Intern — Data/Stats</li>
+        <li>Independent projects: math + coding projects (GitHub portfolio).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Skills</h2>
+      <ul>
+        <li>Python (NumPy, pandas), basic web dev (HTML/CSS/JS), basic C++.</li>
+        <li>Math: calculus, linear algebra, probability and statistics.</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <small>&copy; <span>{{ year }}</span> — Personal Website</small>
+  </footer>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return { siteTitle: "Résumé", theme: "light", year: new Date().getFullYear() };
+      },
+      methods: {
+        toggleTheme() { this.theme = this.theme === "light" ? "dark" : "light"; }
+      }
+    });
+    app.mount("#app");
+  </script>
+</body>
+</html>
